@@ -32,7 +32,7 @@ public class GameScreen extends SScreen {
 		// 信息在最上层
 		addObject(info);
 
-		mGameState = GameState.GAME_START;
+		mGameState = GameState.GAME_PAUSE;
 	}
 
 	@Override
@@ -43,6 +43,9 @@ public class GameScreen extends SScreen {
 			return;
 		}
 
+		if (info.getTimes() == 0) {
+			mGameState = GameState.GAME_END;
+		}
 		super.draw(gc);
 	}
 
@@ -54,7 +57,9 @@ public class GameScreen extends SScreen {
 		}
 
 		// 死了
-
+		if (mGameState == GameState.GAME_END) {
+			return;
+		}
 
 		// 设置显示生命和积分
 
@@ -147,7 +152,7 @@ public class GameScreen extends SScreen {
 	@Override
 	public void onKeyReleased(KeyEvent event) {
 		// 暂停
-		if (event.getCode() == KeyCode.SPACE) {
+		if (event.getCode() == KeyCode.ESCAPE) {
 			if (mGameState == GameState.GAME_PAUSE) {
 				mGameState = GameState.GAME_CONTINUE;
 			} else {
@@ -165,4 +170,9 @@ public class GameScreen extends SScreen {
 		}
 	}
 
+	public void setGameState(int i) {
+		if (i == 1) {
+			mGameState = GameState.GAME_START;
+		}
+	}
 }

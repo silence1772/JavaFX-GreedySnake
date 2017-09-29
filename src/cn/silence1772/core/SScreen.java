@@ -21,7 +21,7 @@ import javafx.util.Duration;
  */
 public abstract class SScreen extends Canvas implements SEvent {
 	protected enum GameState {
-		GAME_MENU, GAME_START, GAME_CONTINUE, GAME_HELP, GAME_SET, GAME_EXIT, GAME_PAUSE
+		GAME_MENU, GAME_START, GAME_CONTINUE, GAME_HELP, GAME_SET, GAME_END, GAME_PAUSE
 	};
 
 	private List<SObject> mObjects = new ArrayList<SObject>();

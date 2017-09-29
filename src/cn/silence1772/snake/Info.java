@@ -15,7 +15,7 @@ public class Info extends SObject {
 	private int length = 0;
 	private int kills = 0;
 	private int hp = 0;
-	private CountDown countDown = new CountDown(300);
+	private CountDown countDown = new CountDown(5);
 
     
 	public Info() {
@@ -42,14 +42,14 @@ public class Info extends SObject {
 
 		gc.setFill(Color.web("#999", 0.5));
 		gc.fillRoundRect(SContants.WIDTH-160, 5, 150, 70, 15, 15);
-		gc.fillRoundRect(SContants.WIDTH/2 - 90, SContants.HEIGHT - 18, 150, 20, 10, 10);
+		gc.fillRoundRect(SContants.WIDTH/2 - 80, SContants.HEIGHT - 18, 150, 20, 10, 10);
 		
 		gc.setFill(Color.web("#666"));
 		gc.fillText("我的分数：" + getScore(), SContants.WIDTH-150, 30);
 		gc.fillText("敌方分数：" + getAIScore(), SContants.WIDTH-150, 60);
 		
 		gc.setFont(Font.font(null, FontWeight.BLACK, 12));
-		gc.fillText(" 空格键暂停  ESC键退出", SContants.WIDTH/2 - 80, SContants.HEIGHT - 4);
+		gc.fillText(" ESC键暂停", SContants.WIDTH/2 - 40, SContants.HEIGHT - 4);
 		
 		gc.setFont(Font.font(null, FontWeight.BLACK, 40));
 		gc.fillText(String.format("%02d", (countDown.getCnt() / 60)) + ":" + String.format("%02d", (countDown.getCnt() % 60)), SContants.WIDTH/2 - 50, 50);
@@ -108,4 +108,7 @@ public class Info extends SObject {
 		this.hp = hp;
 	}
 
+	public int getTimes() {
+		return countDown.getCnt();
+	}
 }
