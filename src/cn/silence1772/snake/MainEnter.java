@@ -5,10 +5,12 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
 import cn.silence1772.core.SApplication;
 import cn.silence1772.core.SContants;
@@ -33,16 +35,7 @@ public class MainEnter extends SApplication{
 		}
 		
         
-		//Screen screen = new Screen(SContants.WIDTH, SContants.HEIGHT);
-		GameScreen gameScreen = new GameScreen(SContants.WIDTH, SContants.HEIGHT);
-		getRoot().getChildren().add(gameScreen);
 		
-		
-		
-		gameScreen.start();
-		gameScreen.initEvents();
-		
-		getScene().setFill(Color.web("#ececf4"));
 		
 		Image image = new Image("image/01.png");
 		ImageView imageView = new ImageView(image);
@@ -65,6 +58,29 @@ public class MainEnter extends SApplication{
 			public void handle(ActionEvent event) {
 				getRoot().getChildren().remove(imageView);
 				getRoot().getChildren().remove(button);
+				
+				//Screen screen = new Screen(SContants.WIDTH, SContants.HEIGHT);
+				GameScreen gameScreen = new GameScreen(SContants.WIDTH, SContants.HEIGHT);
+				getRoot().getChildren().add(gameScreen);
+				
+				gameScreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+					@Override
+					public void handle(MouseEvent event) {
+						
+						if (event.getX() > 403 && event.getX() < 403 + 150 && event.getY() > 360 && event.getY() < 360 + 40) {
+							getRoot().getChildren().remove(gameScreen);
+							getRoot().getChildren().add(imageView);
+							getRoot().getChildren().add(button);
+						}
+					}
+					
+				});
+				
+				gameScreen.start();
+				gameScreen.initEvents();
+				
+				getScene().setFill(Color.web("#ececf4"));
 				gameScreen.setGameState(1);
 			}
 		});

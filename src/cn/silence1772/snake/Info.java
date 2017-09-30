@@ -15,7 +15,7 @@ public class Info extends SObject {
 	private int length = 0;
 	private int kills = 0;
 	private int hp = 0;
-	private CountDown countDown = new CountDown(5);
+	private CountDown countDown = new CountDown(300);
 
     
 	public Info() {

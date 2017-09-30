@@ -19,6 +19,7 @@ public class GameScreen extends SScreen {
 	
 	Food food = new Food();
 	
+	
 	int cnt = 0;
 
 	public GameScreen(double width, double height) {
@@ -44,8 +45,11 @@ public class GameScreen extends SScreen {
 		}
 
 		if (info.getTimes() == 0) {
-			mGameState = GameState.GAME_END;
+			mGameState = GameState.GAME_PAUSE;
+			GameOver gameOver = new GameOver(userSnake.score(), aiSnake.score());
+			addObject(gameOver);
 		}
+
 		super.draw(gc);
 	}
 
@@ -61,6 +65,7 @@ public class GameScreen extends SScreen {
 			return;
 		}
 
+		
 		// 设置显示生命和积分
 
 		//info.setScore(userSnake.score());
