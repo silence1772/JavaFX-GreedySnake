@@ -3,7 +3,7 @@ package cn.silence1772.snake;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
+import javafx.scene.paint.Color;
 import cn.silence1772.core.SContants;
 import cn.silence1772.core.SScreen;
 
@@ -14,21 +14,34 @@ public class GameScreen extends SScreen {
 	UserSnake userSnake = new UserSnake();
 	BaseBody userBody = new BaseBody(userSnake);
 	
-	AISnake aiSnake = new AISnake();
+	AISnake aiSnake = new AISnake(0, 0, 100, Color.web("#3ceadc", 1.0));
 	BaseBody aiBody = new BaseBody(aiSnake);
+	AISnake aiSnake2 = new AISnake(SContants.WIDTH, SContants.HEIGHT, 80, Color.web("#fd6767", 1.0));
+	BaseBody aiBody2 = new BaseBody(aiSnake2);
+	AISnake aiSnake3 = new AISnake(0, SContants.HEIGHT, 40, Color.web("#fff", 1.0));
+	BaseBody aiBody3 = new BaseBody(aiSnake3);
+	AISnake aiSnake4 = new AISnake(SContants.WIDTH, 0, 10, Color.web("#9d9d9d", 1.0));
+	BaseBody aiBody4 = new BaseBody(aiSnake4);
 	
 	Food food = new Food();
-	
-	
-	int cnt = 0;
+
 
 	public GameScreen(double width, double height) {
+		
 		super(width, height);
 
 		addObject(userBody);
 		addObject(userSnake);
+		
 		addObject(aiBody);
 		addObject(aiSnake);
+		addObject(aiBody2);
+		addObject(aiSnake2);
+		addObject(aiBody3);
+		addObject(aiSnake3);
+		addObject(aiBody4);
+		addObject(aiSnake4);
+		
 		addObject(food);
 		// 信息在最上层
 		addObject(info);
@@ -39,14 +52,13 @@ public class GameScreen extends SScreen {
 	@Override
 	public void draw(GraphicsContext gc) {
 		// 暂停
-
 		if (mGameState == GameState.GAME_PAUSE) {
 			return;
 		}
 
 		if (info.getTimes() == 0) {
 			mGameState = GameState.GAME_PAUSE;
-			GameOver gameOver = new GameOver(userSnake.score(), aiSnake.score());
+			GameOver gameOver = new GameOver(userSnake.score(), aiSnake.score() + aiSnake2.score() + aiSnake3.score() + aiSnake4.score());
 			addObject(gameOver);
 		}
 
@@ -59,120 +71,93 @@ public class GameScreen extends SScreen {
 		if (mGameState == GameState.GAME_PAUSE) {
 			return;
 		}
-
-		// 死了
-		if (mGameState == GameState.GAME_END) {
-			return;
-		}
-
 		
 		// 设置显示生命和积分
-
-		//info.setScore(userSnake.score());
 		info.setLength(userSnake.getLength());
 		info.setKills(userSnake.getKills());
 		info.setScore(userSnake.score());
-		info.setAIScore(aiSnake.score());
+		info.setAIScore(aiSnake.score() + aiSnake2.score() + aiSnake3.score() + aiSnake4.score());
 		// 调用更新操作
 		super.update();
 
-		// 不长眼，撞边框上了，减少一条命，复原
-		/*if (snake.getX() > SContants.WIDTH || snake.getX() < 0 //
-				|| snake.getY() > SContants.HEIGHT || snake.getY() < 0) {
-			snake.death();
-			snakeBody.setVisible(false);
-			return;
-		}*/
-		if (userSnake.getX() < 0) {
-			userSnake.setX(SContants.WIDTH);
-		}
-		if (userSnake.getX() > SContants.WIDTH) {
-			userSnake.setX(0);
-		}
-		if (userSnake.getY() < 0) {
-			userSnake.setY(SContants.HEIGHT);
-		}
-		if (userSnake.getY() > SContants.HEIGHT) {
-			userSnake.setY(0);
-		}
-		
-		if (aiSnake.getX() < 0) {
-			aiSnake.setX(SContants.WIDTH);
-		}
-		if (aiSnake.getX() > SContants.WIDTH) {
-			aiSnake.setX(0);
-		}
-		if (aiSnake.getY() < 0) {
-			aiSnake.setY(SContants.HEIGHT);
-		}
-		if (aiSnake.getY() > SContants.HEIGHT) {
-			aiSnake.setY(0);
-		}
+		crossBorder(userSnake);
+		crossBorder(aiSnake);
+		crossBorder(aiSnake2);
+		crossBorder(aiSnake3);
+		crossBorder(aiSnake4);
 
-		// 撞到自己的身体了
-		/*if (snakeBody.isCollisionWith(snake)) {
-			snake.death();
-			snakeBody.setVisible(false);
-			return;
-		}*/
+		// 吃到
+		eatFood(userSnake);
+		eatFood(aiSnake);
+		eatFood(aiSnake2);
+		eatFood(aiSnake3);
+		eatFood(aiSnake4);
+		
+		collisionTwoWay(userSnake, userBody, aiSnake, aiBody);
+		collisionTwoWay(userSnake, userBody, aiSnake2, aiBody2);
+		collisionTwoWay(userSnake, userBody, aiSnake3, aiBody3);
+		collisionTwoWay(userSnake, userBody, aiSnake4, aiBody4);
 
-		// 吃到了~！~
-		if (userSnake.isCollisionWith(food)) {
-			userSnake.addScore(2);
-			userSnake.addLength();
-			food.setVisible(false);
-		}
-		
-		if (aiSnake.isCollisionWith(food)) {
-			aiSnake.addScore(2);
-			aiSnake.addLength();
-			food.setVisible(false);
-		}
-		
-		if (aiBody.isCollisionWith(userSnake)) {
-			userSnake.death();
-			userBody.setVisible(false);
-			aiSnake.addKills();
-			aiSnake.addScore(5);
-			return;
-		}
-		
-		if (userBody.isCollisionWith(aiSnake)) {
-			aiSnake.death();
-			aiBody.setVisible(false);
-			userSnake.addKills();
-			userSnake.addScore(5);
-			return;
-		}
+		aiSnake.updateDir(food);
+		aiSnake2.updateDir(food);
+		aiSnake3.updateDir(food);
+		aiSnake4.updateDir(food);
 
+	}
+	
+	public void crossBorder(BaseSnake baseSnake) {
 		
-		if (cnt > 50) {
-			cnt = 0;
-			aiSnake.updateDir(food);
-		} else {
-			cnt++;
+		if (baseSnake.getX() < 0) {
+			baseSnake.setX(SContants.WIDTH);
+		}
+		if (baseSnake.getX() > SContants.WIDTH) {
+			baseSnake.setX(0);
+		}
+		if (baseSnake.getY() < 0) {
+			baseSnake.setY(SContants.HEIGHT);
+		}
+		if (baseSnake.getY() > SContants.HEIGHT) {
+			baseSnake.setY(0);
 		}
 	}
 
+	public void eatFood(BaseSnake baseSnake) {
+		
+		if (baseSnake.isCollisionWith(food)) {
+			baseSnake.addScore(3);
+			baseSnake.addLength();
+			food.setVisible(false);
+		}
+	}
+	
+	public void collisionTwoWay(BaseSnake passive, BaseBody passiveBody, BaseSnake active, BaseBody activeBody) {
+		
+		collision(passive, passiveBody, active, activeBody);
+		collision(active, activeBody, passive, passiveBody);
+	}
+	
+	public void collision(BaseSnake passive, BaseBody passiveBody, BaseSnake active, BaseBody activeBody) {
+		
+		if (passiveBody.isCollisionWith(active)) {
+			active.death();
+			activeBody.setVisible(false);
+			passive.addKills();
+			passive.addScore(3);
+			return;
+		}
+	}
+	
 	@Override
 	public void onKeyReleased(KeyEvent event) {
 		// 暂停
 		if (event.getCode() == KeyCode.ESCAPE) {
 			if (mGameState == GameState.GAME_PAUSE) {
-				mGameState = GameState.GAME_CONTINUE;
+				mGameState = GameState.GAME_START;
 			} else {
 				mGameState = GameState.GAME_PAUSE;
 			}
 		}
 
-		// 重新开始
-		if (event.getCode() == KeyCode.S) {
-			info.init();
-			userSnake.init();
-			userSnake.init();
-			food.init();
-			mGameState = GameState.GAME_START;
-		}
 	}
 
 	public void setGameState(int i) {

@@ -11,12 +11,14 @@ import cn.silence1772.core.SContants;
 public class Food extends SObject {
 
 	private SecureRandom random = new SecureRandom();
-
+	private Color color;
+	
 	public Food() {
 		init();
 	}
 
 	public void init() {
+		
 		super.init();
 		
 		createRandomFood();
@@ -26,22 +28,25 @@ public class Food extends SObject {
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.setFill(Color.RED);
+		
+		gc.setFill(color);
 		gc.fillOval(getX(), getY(), getWidth(), getHeight());
 	}
 
 	@Override
 	public void update() {
+		
 		if (!isVisible()) {
+			color = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 			createRandomFood();
 			setVisible(true);
 		}
 	}
 
 	private void createRandomFood() {
-		// 保证是在最小单元上，不会错位
-		int x = random.nextInt(SContants.WIDTH / SContants.MIN_X) * SContants.MIN_X;
-		int y = random.nextInt(SContants.HEIGHT / SContants.MIN_Y) * SContants.MIN_Y;
+
+		int x = random.nextInt(SContants.WIDTH);
+		int y = random.nextInt(SContants.HEIGHT);
 		setX(x);
 		setY(y);
 	}

@@ -28,11 +28,13 @@ public class GameOver extends SObject{
 	
 	@Override
 	public void draw(GraphicsContext gc) {
-		// TODO Auto-generated method stub
+
 		gc.setFill(Color.web("#333", 0.6));
 		gc.fillRect(0, 0, SContants.WIDTH, SContants.HEIGHT);
+		
 		gc.setFill(Color.web("#ddd"));
 		gc.fillRoundRect(300, 180, 350, 240, 20, 20);
+		
 		gc.setFont(Font.font(null, FontWeight.BLACK, 40));
 		gc.setFill(Color.web("#333"));
 		gc.fillText(string, 340, 230);
@@ -43,6 +45,7 @@ public class GameOver extends SObject{
 		
 		gc.setFill(Color.web("#80b4ff"));
 		gc.fillRoundRect(403, 360, 150, 40, 15, 15);
+		
 		gc.setFill(Color.web("#fff"));
 		gc.fillText("返回", 460, 386);
 	}

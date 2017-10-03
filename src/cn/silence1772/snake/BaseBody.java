@@ -15,6 +15,7 @@ public class BaseBody extends SObject {
 	private int bias = 4;
 
 	public BaseBody(BaseSnake snake) {
+		
 		this.snake = snake;
 		// 属性绑定
 		this.xProperty.bindBidirectional(snake.xProperty());
@@ -28,10 +29,10 @@ public class BaseBody extends SObject {
 
 
 	public void init() {
+		
 		super.init();
 		
 		this.length = snake.length;
-		
 		list.clear();
 		for (int i = 0; i < snake.getLength(); i++) {
 			Point point = new Point();
@@ -43,6 +44,7 @@ public class BaseBody extends SObject {
 
 	@Override
 	public void draw(GraphicsContext gc) {
+		
 		if (snake.getLength() <= 1) {
 			return;
 		}
@@ -66,12 +68,8 @@ public class BaseBody extends SObject {
 			}
 		}
 
-		//gc.setFill(snake.getSnakeColor());
-		// 调试用这个颜色
-		//Color color = new Color(56, 163, 253, 1.0);
 		gc.setFill(snake.getSnakeColor());
 		for (Point point : list) {
-	
 			gc.fillOval(point.getX(), point.getY(), getWidth(), getHeight());
 		}
 	}
@@ -88,8 +86,8 @@ public class BaseBody extends SObject {
 
 	@Override
 	public boolean isCollisionWith(SObject baseObject) {
+		
 		for (Point point : list) {
-
 			if (isCollisionWith(point.getX(), point.getY(), baseObject))
 				return true;
 		}
@@ -97,12 +95,12 @@ public class BaseBody extends SObject {
 	}
 
 	private boolean isCollisionWith(double x, double y, SObject baseObject) {
+		
 		if (x + getWidth() - bias > baseObject.getX() && x < baseObject.getX() + baseObject.getWidth() - bias
 				&& y + getHeight() - bias > baseObject.getY() && y < baseObject.getY() + baseObject.getHeight() - bias) {
 			return true;
 		}
 		return false;
 	}
-
 }
 

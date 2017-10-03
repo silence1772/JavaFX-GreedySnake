@@ -12,6 +12,7 @@ public class UserSnake extends BaseSnake{
 	
 	@Override
 	public void init() {
+		
 		direction = DIRECTIONS.DIR_RIGHT;
 		color = Color.web("#38a3fd", 1.0);
 		speed = 1.5;
@@ -22,22 +23,22 @@ public class UserSnake extends BaseSnake{
 	
 	@Override
 	public void onKeyPressed(KeyEvent event) {
+		
 		KeyCode tmpCode = event.getCode();
 		// 如果反方向那么不处理，蛇不会掉头
-		if ((tmpCode == KeyCode.UP && direction == DIRECTIONS.DIR_DOWN) //
-				|| (tmpCode == KeyCode.DOWN && direction == DIRECTIONS.DIR_UP) //
-				|| (tmpCode == KeyCode.RIGHT && direction == DIRECTIONS.DIR_LEFT) //
-				|| (tmpCode == KeyCode.LEFT && direction == DIRECTIONS.DIR_RIGHT) //
+		if ((tmpCode == KeyCode.UP && direction == DIRECTIONS.DIR_DOWN) 
+				|| (tmpCode == KeyCode.DOWN && direction == DIRECTIONS.DIR_UP) 
+				|| (tmpCode == KeyCode.RIGHT && direction == DIRECTIONS.DIR_LEFT) 
+				|| (tmpCode == KeyCode.LEFT && direction == DIRECTIONS.DIR_RIGHT) 
 		) {
 			return;
 		}
 
-
 		updateDir(tmpCode, direction);
-
 	}
 	
 	public void updateDir(KeyCode keyCode, DIRECTIONS dir) {
+		
 		if (keyCode == KeyCode.UP) {
 			switch (dir) {
 			case DIR_LEFTDOWN:

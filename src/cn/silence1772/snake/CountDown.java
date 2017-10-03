@@ -1,10 +1,12 @@
 package cn.silence1772.snake;
 
 public class CountDown implements Runnable{
+	
 	private Thread t;
 	private int cnt;
 	
 	public CountDown(int times) {
+		
 		cnt = times;
 	}
 	

@@ -4,8 +4,8 @@ package cn.silence1772.core;
 /**
  * 常量类
  * 
- * @author flyfox
- * @date 2014年11月4日
+ * @author silence1772
+ * @date 2017年9月16日
  */
 public class SContants {
 	/**
